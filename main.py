@@ -5,16 +5,16 @@ from notify import send_message
 from logger_config import setup_logger
 
 
-HOSTS = [
-    "201.184.246.122",
-    "201.184.245.250",
-    "201.184.246.123",
-    "201.184.245.251"
-]
 RTT = 16
 LOSS = 1.0
 VARIATION = 1.5
-WAIT_TIME: int = 10
+WAIT_TIME: int = 5
+HOSTNAMES = {
+    "201.184.246.122": "PoC-SDW-MDE-Canal-01",
+    "201.184.245.250": "PoC-SDW-MDE-Canal-02",
+    "201.184.246.123": "PoC-SDW-MDE2-Canal-01",
+    "201.184.245.251": "PoC-SDW-MDE2-Canal-02"
+}
 
 
 def mtr_result(host) -> str:
@@ -49,6 +49,8 @@ def hop_list(result) -> list:
 
 def path_analysis(host, current, previous) -> None:
     logger = setup_logger()
+    host = HOSTNAMES.get(host)
+    print(f"Analizando cambios para {host}")
     previous_path = hop_list(previous)
     current_path = hop_list(current)
 
@@ -119,15 +121,14 @@ def print_change(path, stats, change_type, host, curr_hop, prev_hop, key):
             f"\nSalto IP {curr_hop['host']}: IP anterior {previous_val} --> IP actual {current_val}"
         )
 
-    response = send_message(message, path)
-    logger.info(response)
+    logger.info(send_message(message, path))
 
 
 if __name__ == "__main__":
-    previous_results = {host: None for host in HOSTS}
+    previous_results = {host: None for host in HOSTNAMES.keys()}
 
     while True:
-        for host in HOSTS:
+        for host in HOSTNAMES.keys():
             current_result = mtr_result(host)
             previous_result = previous_results.get(host)
 
