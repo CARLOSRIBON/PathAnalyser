@@ -2,6 +2,7 @@ import subprocess
 import time
 import re
 from notify import send_message
+from logger_config import setup_logger
 
 
 HOSTS = [
@@ -45,6 +46,7 @@ def hop_list(result) -> list:
 
 
 def path_analysis(host, current, previous) -> None:
+    logger = setup_logger()
     previous_path = hop_list(previous)
     current_path = hop_list(current)
 
@@ -59,8 +61,7 @@ def path_analysis(host, current, previous) -> None:
         elif is_path_changed or is_loss_increased or is_rtt_increased:
             check_for_changes(host, current_path, previous_path)
     except Exception as e:
-        print(f"Error al analizar el path: {e}")
-        print(current_path)
+        logger.error(e)
 
 
 def check_for_changes(host, current_path, previous_path):
@@ -98,6 +99,7 @@ def check_for_changes(host, current_path, previous_path):
 
 
 def print_change(path, stats, change_type, host, curr_hop, prev_hop, key):
+    logger = setup_logger()
     current_val = curr_hop[key]
     previous_val = prev_hop[key]
     hop_num = curr_hop["hop"]
@@ -116,7 +118,7 @@ def print_change(path, stats, change_type, host, curr_hop, prev_hop, key):
         )
 
     response = send_message(message, path)
-    print(response)
+    logger.info(response)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,6 @@
 #!/bin/bash
 
-sudo python3 -m pip install -r requirements.txt
-sudo python3 main.py
+# Install python3.11
+CURRENT_DIR=$(pwd)
+SCRIPT_DIR="$CURRENT_DIR/main.py"
+sudo python3 $SCRIPT_DIR

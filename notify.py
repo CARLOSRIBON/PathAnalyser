@@ -9,8 +9,6 @@ URL = "https://nuug6fk6jrj7utq2tnsgnyj4iy.apigateway.us-ashburn-1.oci.customer-o
 def send_message(message, path) -> None:
     timestamp = datetime.datetime.now().strftime("%b %d %H:%M:%S")
     hostname = os.uname().nodename
-    # message = str(message + '\n' + path)
-    print(f"Enviando mensaje: {message}")
 
     try:
         response = requests.post(
