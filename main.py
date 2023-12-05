@@ -6,8 +6,10 @@ from logger_config import setup_logger
 
 
 HOSTS = [
-    "www.instagram.com",
-    "www.twitter.com",
+    "201.184.246.122",
+    "201.184.245.250",
+    "201.184.246.123",
+    "201.184.245.251"
 ]
 RTT = 16
 LOSS = 1.0
