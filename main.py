@@ -5,10 +5,10 @@ from notify import send_message
 from logger_config import setup_logger
 
 
-RTT = 16
+RTT = 100
 LOSS = 1.0
 VARIATION = 1.5
-WAIT_TIME: int = 5
+WAIT_TIME: int = 30
 HOSTNAMES = {
     "201.184.246.122": "PoC-SDW-MDE-Canal-01",
     "201.184.245.250": "PoC-SDW-MDE-Canal-02",
