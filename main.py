@@ -15,6 +15,7 @@ HOSTNAMES = {
     "201.184.246.123": "PoC-SDW-MDE2-Canal-01",
     "201.184.245.251": "PoC-SDW-MDE2-Canal-02"
 }
+logger = setup_logger()
 
 
 def mtr_result(host) -> str:
@@ -48,7 +49,6 @@ def hop_list(result) -> list:
 
 
 def path_analysis(host, current, previous) -> None:
-    logger = setup_logger()
     host = HOSTNAMES.get(host)
     print(f"Analizando cambios para {host}")
     previous_path = hop_list(previous)
@@ -103,7 +103,6 @@ def check_for_changes(host, current_path, previous_path):
 
 
 def print_change(path, stats, change_type, host, curr_hop, prev_hop, key):
-    logger = setup_logger()
     current_val = curr_hop[key]
     previous_val = prev_hop[key]
     hop_num = curr_hop["hop"]
@@ -139,8 +138,6 @@ if __name__ == "__main__":
             elif previous_result is None:
                 previous_results[host] = current_result
             else:
-                print(
-                    f"No hay diferencia para el host {host} entre el último y el actual resultado"
-                )
+                logger.info(f"No hay cambios en {HOSTNAMES.get(host)}")
 
         time.sleep(WAIT_TIME)
