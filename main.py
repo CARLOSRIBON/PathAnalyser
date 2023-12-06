@@ -5,7 +5,7 @@ from notify import send_message
 from logger_config import setup_logger
 
 
-RTT = 95
+RTT = 1
 LOSS = 1.0
 VARIATION = 1.5
 WAIT_TIME: int = 30
@@ -25,7 +25,7 @@ def mtr_result(host) -> str:
         )
         return result.stdout
     except subprocess.SubprocessError as e:
-        print(f"Error al ejecutar MTR para {host}: {e}")
+        logger.error(e)
         return ""
 
 
@@ -50,7 +50,6 @@ def hop_list(result) -> list:
 
 def path_analysis(host, current, previous) -> None:
     host = HOSTNAMES.get(host)
-    print(f"Analizando cambios para {host}")
     previous_path = hop_list(previous)
     current_path = hop_list(current)
 
@@ -61,7 +60,7 @@ def path_analysis(host, current, previous) -> None:
         is_connection_lost = current_path[-1]["loss"] == 100
 
         if is_connection_lost:
-            send_message(f"Se perdió la conexión con {host}", current_path)
+            send_message(f"Se perdió la conexión con **{host}**", current_path)
         elif is_path_changed or is_loss_increased or is_rtt_increased:
             check_for_changes(host, current_path, previous_path)
     except Exception as e:
@@ -110,14 +109,14 @@ def print_change(path, stats, change_type, host, curr_hop, prev_hop, key):
     if key in ["rtt", "loss"]:
         metric = "ms" if key == "rtt" else "%"
         message = (
-            f"Se presentó un cambio en el {change_type} hacia {host} ahora es de {stats}{metric} "
-            f"se identifica el fallo en el hop **#{hop_num}** \nSalto IP {curr_hop['host']}: "
+            f"Se presentó un cambio en el {change_type} hacia **{host}** ahora es de **{stats}{metric}** "
+            f"se identifica el fallo en el hop **#{hop_num}** \nSalto IP **{curr_hop['host']}:** "
             f"Medición anterior **{previous_val}{metric}** --> Medición actual **{current_val}{metric}**"
         )
     else:
         message = (
-            f"Se presentó un recálculo en el {change_type} hacia {host} en el hop **#{hop_num}** "
-            f"\nSalto IP {curr_hop['host']}: IP anterior **{previous_val}** --> IP actual **{current_val}**"
+            f"Se presentó un recálculo en el **{change_type}** hacia **{host}** en el hop **#{hop_num}** "
+            f"\nSalto IP **{curr_hop['host']}:** IP anterior **{previous_val}** --> IP actual **{current_val}**"
         )
 
     logger.info(send_message(message, path))
