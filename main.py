@@ -5,7 +5,7 @@ from notify import send_message
 from logger_config import setup_logger
 
 
-RTT = 80
+RTT = 95
 LOSS = 1.0
 VARIATION = 1.5
 WAIT_TIME: int = 30
@@ -111,13 +111,13 @@ def print_change(path, stats, change_type, host, curr_hop, prev_hop, key):
         metric = "ms" if key == "rtt" else "%"
         message = (
             f"Se presentó un cambio en el {change_type} hacia {host} ahora es de {stats}{metric} "
-            f"se identifica el fallo en el hop #{hop_num} \nSalto IP {curr_hop['host']}: "
-            f"Medición anterior {previous_val}{metric} --> Medición actual {current_val}{metric}"
+            f"se identifica el fallo en el hop **#{hop_num}** \nSalto IP {curr_hop['host']}: "
+            f"Medición anterior **{previous_val}{metric}** --> Medición actual **{current_val}{metric}**"
         )
     else:
         message = (
-            f"Se presentó un recálculo en el {change_type} hacia {host} en el hop #{hop_num} "
-            f"\nSalto IP {curr_hop['host']}: IP anterior {previous_val} --> IP actual {current_val}"
+            f"Se presentó un recálculo en el {change_type} hacia {host} en el hop **#{hop_num}** "
+            f"\nSalto IP {curr_hop['host']}: IP anterior **{previous_val}** --> IP actual **{current_val}**"
         )
 
     logger.info(send_message(message, path))
