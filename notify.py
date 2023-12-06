@@ -3,7 +3,7 @@ import datetime
 import os
 
 
-URL = "https://nuug6fk6jrj7utq2tnsgnyj4iy.apigateway.us-ashburn-1.oci.customer-oci.com/pocbancolombia"
+URL = "https://nuug6fk6jrj7utq2tnsgnyj4iy.apigateway.us-ashburn-1.oci.customer-oci.com/cloud_to_webex"
 
 
 def send_message(message, path) -> None:

@@ -7,7 +7,7 @@ def setup_logger():
     logger.setLevel(logging.INFO)
 
     # Create FileHandler
-    handler = logging.FileHandler("logs.log")
+    handler = logging.FileHandler("./logs.log")
     formatter = logging.Formatter(
         "%(asctime)s - %(funcName)s - %(levelname)s - %(message)s"
     )
