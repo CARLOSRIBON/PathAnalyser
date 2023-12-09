@@ -13,7 +13,7 @@ HOSTNAMES = {
     "201.184.246.122": "PoC-SDW-MDE-Canal-01",
     "201.184.245.250": "PoC-SDW-MDE-Canal-02",
     "201.184.246.123": "PoC-SDW-MDE2-Canal-01",
-    "201.184.245.251": "PoC-SDW-MDE2-Canal-02"
+    "201.184.245.251": "PoC-SDW-MDE2-Canal-02",
 }
 logger = setup_logger()
 
@@ -41,7 +41,9 @@ def hop_list(result) -> list:
             "host": match.group(2),
             "loss": float(match.group(3)),
             "rtt": float(match.group(7)),
-            "jitter": (float(match.group(10))/float(match.group(7))) if float(match.group(7)) > 0 else 0,
+            "jitter": (float(match.group(10)) / float(match.group(7)))
+            if float(match.group(7)) > 0
+            else 0,
         }
         for line in result.split("\n")
         if (match := pattern.match(line))
@@ -108,18 +110,21 @@ def print_change(path, stats, change_type, host, curr_hop, prev_hop, key):
 
     if key in ["rtt", "loss"]:
         metric = "ms" if key == "rtt" else "%"
+        titulo = f"Aumento en {change_type} "
         message = (
-            f"Se presentó un cambio en {change_type} hacia **{host}** ahora es de **{stats}{metric}** "
-            f"se identifica el fallo en el hop **#{hop_num}** \nSalto IP **{curr_hop['host']}:** "
-            f"Medición anterior **{previous_val}{metric}** --> Medición actual **{current_val}{metric}**"
+            f"Cambio hacia **{host}** medición actual: **{stats}{metric}** "
+            f"\n\nFallo en el hop **#{hop_num}** "
+            f"\n\nSalto IP **{curr_hop['host']}:** Medición anterior **{previous_val}{metric}** --> Medición actual **{current_val}{metric}**"
         )
     else:
+        titulo = f"Recálculo {change_type} "
         message = (
-            f"Se presentó un recálculo en el **{change_type}** hacia **{host}** en el hop **#{hop_num}** "
-            f"\nSalto IP **{curr_hop['host']}:** IP anterior **{previous_val}** --> IP actual **{current_val}**"
+            f"Cambio hacia **{host}** "
+            f"\n\nFallo en el hop **#{hop_num}** "
+            f"\n\nSalto IP **{curr_hop['host']}:** IP anterior **{previous_val}** --> IP actual **{current_val}**"
         )
 
-    logger.info(send_message(message, path))
+    logger.info(send_message(message, titulo, hop_num, path))
 
 
 if __name__ == "__main__":
@@ -127,7 +132,7 @@ if __name__ == "__main__":
 
     while True:
         for host in HOSTNAMES.keys():
-            current_result = mtr_result(host)
+            current_result: str = mtr_result(host)
             previous_result = previous_results.get(host)
 
             if current_result and current_result != previous_result:
