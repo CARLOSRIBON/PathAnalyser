@@ -5,7 +5,7 @@ from notify import send_message
 from logger_config import setup_logger
 
 
-RTT = 95
+RTT = 85
 LOSS = 1.0
 VARIATION = 1.5
 WAIT_TIME: int = 30
@@ -14,6 +14,10 @@ HOSTNAMES = {
     "201.184.245.250": "PoC-SDW-MDE-Canal-02",
     "201.184.246.123": "PoC-SDW-MDE2-Canal-01",
     "201.184.245.251": "PoC-SDW-MDE2-Canal-02",
+    "186.180.19.251": "SDW-BOG-cE2-Canal-01",
+    "181.204.228.139": "SDW-BOG-cE2-Canal-02",
+    "186.180.19.250": "SDW-BOG-cE1-Canal-01",
+    "181.204.228.138": "SDW-BOG-cE1-Canal-02"
 }
 logger = setup_logger()
 
