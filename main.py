@@ -66,7 +66,7 @@ def path_analysis(host, current, previous) -> None:
         is_connection_lost = current_path[-1]["loss"] == 100
 
         if is_connection_lost:
-            send_message(f"Se perdió la conexión con **{host}**", titulo='Conexión perdida',hop=current_path[-1].get('hop'), path=current_path)
+            send_message(f"Se perdió la conexión con **{host}**", tittle='Conexión perdida',hop=current_path[-1].get('hop'), path=current_path)
         elif is_path_changed or is_loss_increased or is_rtt_increased:
             check_for_changes(host, current_path, previous_path)
     except Exception as e:
