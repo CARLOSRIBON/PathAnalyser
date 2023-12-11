@@ -5,7 +5,7 @@ from notify import send_message
 from logger_config import setup_logger
 
 
-RTT = 85
+RTT = 95
 LOSS = 1.0
 VARIATION = 1.5
 WAIT_TIME: int = 30
